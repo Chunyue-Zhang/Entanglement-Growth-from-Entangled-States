@@ -9,65 +9,65 @@ from quspin.basis import spin_basis_1d  # Hilbert space spin basis
 from quspin.operators import hamiltonian  # Hamiltonians and operators
 
 
-# 基本参数
-##整型----------
-D = 2000  # circuit的总深度
-dn = 12  # Floquet dynamics的decade number
-L = 16  # 偶数
-n01 = 12  # 第一段热化的时间步长的数量
-n02 = 5  # 第二段热化的时间步长的数量
-n03 = 11  # 第三段热化的时间步长的数量
-n1 = 10  # MBL、Anderson线性坐标图时间步长的数量
-n1_ff = 10  # free fermion的第一段线性坐标图时间步长的数量
-n2 = 28  # MBL、Anderson对数坐标图时间步长的数量
-n2_ff = 100  # free fermion的第二段线性坐标图时间步长的数量
-rscsn = 5  # circuit在每次大循环中的sample number
+
+
+D = 2000
+dn = 12
+L = 16
+n01 = 12
+n02 = 5
+n03 = 11
+n1 = 10
+n1_ff = 10
+n2 = 28
+n2_ff = 100
+rscsn = 5
 sss = L // 2  # subsystem size
 tsn = 3  # total sample number
-##浮点型----------
-J_perp_A = 1.0  # Anderson的哈密顿量的参数
-J_perp_F = 1.0  # Floquet的哈密顿量的参数
-J_perp_ff = 1.0  # free fermion的哈密顿量的参数
-J_perp_M = 1.0  # MBL的哈密顿量的参数
-J_perp_t = 1.0  # thermalize的哈密顿量的参数
-J_z_A = 0.0  # Anderson的哈密顿量的参数
-J_z_F = 1.0  # Floquet的哈密顿量的参数
-J_z_M = 0.5  # MBL的哈密顿量的参数
-J_z_t = 0.5  # thermalize的哈密顿量的参数
+
+J_perp_A = 1.0
+J_perp_F = 1.0
+J_perp_ff = 1.0
+J_perp_M = 1.0
+J_perp_t = 1.0
+J_z_A = 0.0
+J_z_F = 1.0
+J_z_M = 0.5
+J_z_t = 0.5
 LB = 2.0  # the logarithmic base to calculate entanglement entropy
-T01 = 3.0  # 第一段热化的总时间，/12=0.25
-T02 = 1.5  # 第二段热化的总时间，/5=0.3
-T03 = 5.5  # 第三段热化的总时间，/11=0.5
-T1 = 1e1  # MBL、Anderson线性坐标图演化的总时间
-T1_ff = 200.0  # free fermion的第一段线性坐标图演化的总时间
-T2 = 1e15  # MBL、Anderson对数坐标图演化的终止时间
-T2_ff = 100.0  # free fermion的第二段线性坐标图演化的总时间
-T_0_F = 1.0  # Floquet operator的参数
-T_1_F = 0.4  # Floquet operator的参数
-W_A = 5.0  # Anderson的哈密顿量的参数
-W_F = 5.0  # Floquet的哈密顿量的参数
-W_M = 5.0  # MBL的哈密顿量的参数
-W_t = 0.5  # thermalize的哈密顿量的参数
-##其他（包括数据类型不确定的变量）----------
+T01 = 3.0
+T02 = 1.5
+T03 = 5.5
+T1 = 1e1
+T1_ff = 200.0
+T2 = 1e15
+T2_ff = 100.0
+T_0_F = 1.0
+T_1_F = 0.4
+W_A = 5.0
+W_F = 5.0
+W_M = 5.0
+W_t = 0.5
+
 alpha_beta_degree = [0, 90, 180, 180]
-BC_A = "OBC"  # Anderson的哈密顿量的参数
-BC_F = "OBC"  # Floquet的哈密顿量的参数
-BC_ff = "OBC"  # free fermion的哈密顿量的参数
-BC_M = "OBC"  # MBL的哈密顿量的参数
-BC_t = "OBC"  # thermalize的哈密顿量的参数
-decade0_n_list = [1, 3]  # Floquet dynamics的第一decade内的驱动周期数列表
+BC_A = "OBC"
+BC_F = "OBC"
+BC_ff = "OBC"
+BC_M = "OBC"
+BC_t = "OBC"
+decade0_n_list = [1, 3]
 gamma_degree = [180, 0, 0, 90]
 pauli = False
 pn = L // 2  # particle number
-T04_list = [11.0, 12.2, 13.7, 15.7, 19.0, 24.0, 32.0, 500.0]  # 后期的热化时间列表
+T04_list = [11.0, 12.2, 13.7, 15.7, 19.0, 24.0, 32.0, 500.0]
 
-# 一阶衍生参数和变量
+
 depth = np.arange(D + 1)
-n0 = n01 + n02 + n03 + len(T04_list)  # 热化的时间步长的总数量
+n0 = n01 + n02 + n03 + len(T04_list)
 period_number = np.concatenate(
     tuple([np.array([0, 1])] + [np.array(decade0_n_list) * 10**i for i in range(dn)])
 )
-T0 = max(T04_list)  # 热化的总时间
+T0 = max(T04_list)
 t_AM = np.concatenate(
     (np.linspace(0.0, T1, n1 + 1), np.logspace(np.log10(T1), np.log10(T2), n2 + 1))
 )
@@ -84,17 +84,17 @@ T_thermal = np.concatenate(
 )
 wssi = list(range(L))  # whole system spin index
 
-# 二阶衍生参数和变量
+
 sssi_list = list(combinations(wssi, sss))  # subsystem spin index list
 
 
-# 其他待存变量
+
 psi0_vector_index = []
-disorder_thermal = []  # 用于存储disorder构型
-disorder_Anderson = []  # 用于存储disorder构型
-disorder_Floquet = []  # 用于存储disorder构型
-disorder_MBL = []  # 用于存储disorder构型
-gate_applied_bond_index = []  # 用于存储random circuit构型
+disorder_thermal = []
+disorder_Anderson = []
+disorder_Floquet = []
+disorder_MBL = []
+gate_applied_bond_index = []
 entanglement_entropy_thermal = []
 entanglement_entropy_SWAP = []
 entanglement_entropy_freefermion = []
@@ -105,9 +105,9 @@ entanglement_entropy_circuit = []
 elapsed_time = 0
 filename = os.path.splitext(os.path.basename(__file__))[0]
 print("filename=", filename)
-unique_id = uuid.uuid4()  # 生成一个唯一的UUID用于命名存数据的文件
+unique_id = uuid.uuid4()
 print("unique_id=", unique_id)
-filename = f"{filename}_{unique_id}"  # 构建唯一的txt文件名
+filename = f"{filename}_{unique_id}"
 
 
 #
@@ -187,7 +187,7 @@ for i in range(4):
     )
     U_list.append(U)
 #
-basis_whole = spin_basis_1d(L, pauli=pauli)  # whole Hilbert space的basis
+basis_whole = spin_basis_1d(L, pauli=pauli)
 sector_index_in_whole = []
 for i in range(basis.Ns):
     sector_index_in_whole.append(basis_whole.index(basis[i]))
@@ -297,12 +297,6 @@ for i in range(tsn):
     disorder_Floquet.append(hs_F)
     disorder_MBL.append(hs_M)
     gate_applied_bond_index.append(gabi)
-    data["psi0_vector_index"] = psi0_vector_index
-    data["disorder_thermal"] = disorder_thermal
-    data["disorder_Anderson"] = disorder_Anderson
-    data["disorder_Floquet"] = disorder_Floquet
-    data["disorder_MBL"] = disorder_MBL
-    data["gate_applied_bond_index"] = gate_applied_bond_index
     EE_thermal = np.zeros((n0 + 1, n0 + 1))
     EE_SWAP = np.zeros((n0 + 1, len(sssi_list) // 2))
     EE_freefermion = np.zeros((n0 + 1, n1_ff + n2_ff + 2))
@@ -331,7 +325,7 @@ for i in range(tsn):
         psi0_list.append(psi0)
         EE_thermal[ii:, ii] = basis.ent_entropy(psi0, sssi, density=False)["Sent_A"]
         if ii < n0:
-            EE_thermal[ii, ii + 1 :] = copy.deepcopy(EE_thermal[ii, ii])  # 创建深拷贝
+            EE_thermal[ii, ii + 1 :] = copy.deepcopy(EE_thermal[ii, ii])
         for iii in range(len(sssi_list) // 2):
             EE_SWAP[ii, iii] = basis.ent_entropy(psi0, sssi_list[iii], density=False)[
                 "Sent_A"
@@ -410,7 +404,7 @@ for i in range(tsn):
                 psi_whole = np.zeros(basis_whole.Ns) + 0j
                 psi_whole[sector_index_in_whole] = copy.deepcopy(
                     psi0_list[iiii]
-                )  # 创建深拷贝
+                )
                 EE_circuit[ii, iii, iiii, 0] = basis.ent_entropy(
                     psi0_list[iiii], sssi, density=False
                 )["Sent_A"]
@@ -429,19 +423,13 @@ for i in range(tsn):
     entanglement_entropy_Floquet.append(EE_Floquet / np.log(LB))
     entanglement_entropy_MBL.append(EE_MBL / np.log(LB))
     entanglement_entropy_circuit.append(EE_circuit / np.log(LB))
-    data["entanglement_entropy_thermal"] = entanglement_entropy_thermal
-    data["entanglement_entropy_SWAP"] = entanglement_entropy_SWAP
-    data["entanglement_entropy_freefermion"] = entanglement_entropy_freefermion
-    data["entanglement_entropy_Anderson"] = entanglement_entropy_Anderson
-    data["entanglement_entropy_Floquet"] = entanglement_entropy_Floquet
-    data["entanglement_entropy_MBL"] = entanglement_entropy_MBL
-    data["entanglement_entropy_circuit"] = entanglement_entropy_circuit
     end_time = time.time()
     delta_time = end_time - start_time - elapsed_time
     elapsed_time = end_time - start_time
     data["elapsed_time"] = elapsed_time
-    print(f"第{i+1}次循环运行时间：{delta_time:.2f}秒")
-    print(f"前{i+1}次循环运行时间：{elapsed_time:.2f}秒")
-    print(f"由此预计约{elapsed_time/(i+1)*(tsn-i-1):.2f}秒后完全运行完毕")
+    print(f"The running time of the {i+1}-th cycle: {delta_time:.2f} seconds")
+    print(f"The running time of the previous {i+1} cycles: {elapsed_time:.2f} seconds")
+    print("Based on this, it is estimated that the entire process will")
+    print(f"be completed in approximately {elapsed_time/(i+1)*(tsn-i-1):.2f} seconds")
     with open(f"{filename}.txt", "wb") as f:
         pickle.dump(data, f)
